@@ -123,3 +123,68 @@ async function searchWeather() {
 
     }
 }
+
+function displayWeather(city, data) {
+
+    removeSkeleton();
+
+    const current = data.current_weather;
+
+    const code =
+        weatherCodes[current.weathercode] ||
+        ["❓", "Unknown"];
+
+    document.getElementById("cityName")
+        .textContent = city;
+
+    document.getElementById("temp")
+        .textContent =
+        `Temperature: ${convertTemp(current.temperature)}°${currentUnit}`;
+
+    document.getElementById("desc")
+        .textContent =
+        `${code[0]} ${code[1]}`;
+
+    document.getElementById("humidity")
+        .textContent =
+        "Humidity: Available in hourly data";
+
+    document.getElementById("wind")
+        .textContent =
+        `Wind Speed: ${current.windspeed} km/h`;
+
+    forecastRow.innerHTML = "";
+
+    for (let i = 0; i < 7; i++) {
+
+        const day =
+            new Date(data.daily.time[i])
+            .toLocaleDateString("en-US", {
+                weekday: "short"
+            });
+
+        const max =
+            convertTemp(
+                data.daily.temperature_2m_max[i]
+            );
+
+        const min =
+            convertTemp(
+                data.daily.temperature_2m_min[i]
+            );
+
+        const forecastCode =
+            weatherCodes[
+                data.daily.weathercode[i]
+            ] || ["❓", "Unknown"];
+
+        forecastRow.innerHTML += `
+            <div class="day-card">
+                <h4>${day}</h4>
+                <p>${forecastCode[0]}</p>
+                <p>${max}° / ${min}°</p>
+            </div>
+        `;
+    }
+}
+
