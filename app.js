@@ -188,3 +188,45 @@ function displayWeather(city, data) {
     }
 }
 
+function getLocalTime(timezone) {
+
+    $.getJSON(
+        `https://worldtimeapi.org/api/timezone/${timezone}`
+    )
+
+    /* Success */
+    .done(function (data) {
+
+        const localTime =
+            new Date(data.datetime)
+            .toLocaleTimeString();
+
+        $("#time").text(
+            "Local Time: " + localTime
+        );
+
+    })
+
+    /* Fail */
+    .fail(function () {
+
+        const browserTime =
+            new Date()
+            .toLocaleTimeString();
+
+        $("#time").text(
+            "Local Time: " + browserTime
+        );
+
+    })
+
+    /* Always */
+    .always(function () {
+
+        console.log(
+            "Time request completed at:",
+            new Date()
+        );
+
+    });
+}
