@@ -376,3 +376,26 @@ document.getElementById("toggleUnit")
     }
 
 });
+
+/* Search Button */
+searchBtn.addEventListener(
+    "click",
+    searchWeather
+);
+
+/* Debounce Input */
+cityInput.addEventListener(
+    "input",
+    debounce(function () {
+
+        if (
+            cityInput.value.trim().length >= 2
+        ) {
+            searchWeather();
+        }
+
+    }, 500)
+);
+
+/* Load Search History */
+renderHistory();
