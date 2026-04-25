@@ -230,3 +230,54 @@ function getLocalTime(timezone) {
 
     });
 }
+
+function showError(message) {
+
+    errorBanner.innerHTML = `
+        <div class="error">
+            ${message}
+            <button onclick="searchWeather()">
+                Retry
+            </button>
+        </div>
+    `;
+}
+
+function clearError() {
+    errorBanner.innerHTML = "";
+}
+
+async function fetchWithTimeout(url) {
+
+    const controller =
+        new AbortController();
+
+    const timeoutId =
+        setTimeout(() => {
+            controller.abort();
+        }, 10000);
+
+    const response =
+        await fetch(url, {
+            signal: controller.signal
+        });
+
+    clearTimeout(timeoutId);
+
+    return response;
+}
+
+function debounce(func, delay) {
+
+    let timer;
+
+    return function (...args) {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+
+    };
+}
