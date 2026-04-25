@@ -281,3 +281,59 @@ function debounce(func, delay) {
 
     };
 }
+
+function saveHistory(city) {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "weatherHistory"
+            )
+        ) || [];
+
+    history =
+        history.filter(
+            item => item !== city
+        );
+
+    history.unshift(city);
+
+    if (history.length > 5) {
+        history.pop();
+    }
+
+    localStorage.setItem(
+        "weatherHistory",
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+}
+
+function renderHistory() {
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "weatherHistory"
+            )
+        ) || [];
+
+    const container =
+        document.getElementById(
+            "history"
+        );
+
+    container.innerHTML =
+        history.map(city =>
+            `<span class="chip"
+                onclick="loadCity('${city}')">
+                ${city}
+            </span>`
+        ).join("");
+}
+
+function loadCity(city) {
+    cityInput.value = city;
+    searchWeather();
+}
