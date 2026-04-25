@@ -337,3 +337,42 @@ function loadCity(city) {
     cityInput.value = city;
     searchWeather();
 }
+
+function convertTemp(temp) {
+
+    if (currentUnit === "C") {
+        return Math.round(temp);
+    }
+
+    return Math.round(
+        (temp * 9 / 5) + 32
+    );
+}
+
+document.getElementById("toggleUnit")
+.addEventListener("click", function () {
+
+    currentUnit =
+        currentUnit === "C"
+        ? "F"
+        : "C";
+
+    this.textContent =
+        currentUnit === "C"
+        ? "Switch °F"
+        : "Switch °C";
+
+    if (savedWeather) {
+
+        const city =
+            document.getElementById(
+                "cityName"
+            ).textContent;
+
+        displayWeather(
+            city,
+            savedWeather
+        );
+    }
+
+});
